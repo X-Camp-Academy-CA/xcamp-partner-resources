@@ -15,10 +15,15 @@ Your site is live at
 | LIT 2026 | none — see below | [open](https://x-camp-academy-ca.github.io/xcamp-partner-resources/xcamp-winner-letter-2026-lit.html) |
 | TACO 2026 | `taco` | [open](https://x-camp-academy-ca.github.io/xcamp-partner-resources/xcamp-winner-letter-2026-taco.html) |
 | TeamsCode 2026 | `teamscode` | [open](https://x-camp-academy-ca.github.io/xcamp-partner-resources/xcamp-winner-letter-2026-teamscode.html) |
+| October 2026 update | `202610update` | [open](https://x-camp-academy-ca.github.io/xcamp-partner-resources/xcamp-winner-letter-2026-202610update.html) |
 | Template | — | [open](https://x-camp-academy-ca.github.io/xcamp-partner-resources/xcamp-winner-letter-template.html) |
 
 The text is the same on each page. Only the UTM source is different. The UTM source tells
 you which partner sent the click.
+
+The October 2026 update page is the new version of the letter. It replaces the old
+`XCamp_Winner_Letter.html` (see open problem 4). It has the Google Analytics tag and the
+UTM source `202610update` on all 18 links.
 
 ## How to make a new letter
 
@@ -26,6 +31,24 @@ you which partner sent the click.
 2. Change the UTM source on all 18 links to the new partner.
 3. Check the count. Each page must have 18 links with the same UTM source.
 4. Ask Shanshan for the UTM source if the partner is new. Shanshan owns the UTM list.
+
+The link format is:
+
+```
+https://x-camp.academy/contact-us?utm_source={partner}
+```
+
+The 18 links are 14 `href` links in the page and 4 `link:` entries in the course-finder
+script. The QR code text (`text: 'https://x-camp.academy/contact-us'`) does not have a UTM
+source. It is not counted in the 18.
+
+To check the count, run:
+
+```
+grep -o 'utm_source=[a-z0-9]*' xcamp-winner-letter-2026-{partner}.html | sort | uniq -c
+```
+
+The result must be one line: `18 utm_source={partner}`.
 
 Use this pattern for the file name:
 
@@ -44,18 +67,19 @@ xcamp-winner-letter-{year}-{partner}.html
 LIT winners in June 2026, so X-Camp has no click data from it. Add `utm_source=lit` before
 you send this page again.
 
-**2. The UTM source `gpl` is new.** Shanshan's table of September 28 has `hpi`. It does not
-have `gpl`. Ask Shanshan to add `gpl` to the table.
+**2. The UTM sources `gpl` and `202610update` are new.** Shanshan's table of September 28
+has `hpi`. It does not have `gpl` or `202610update`. Ask Shanshan to add both to the table.
 
 **3. The template page is empty.** The file holds 2 bytes. Fill the page or delete the file.
 
 **4. One old link is dead.** `XCamp_Winner_Letter.html` went to 114 winners on 24 June 2026.
-That file is no longer in this repository. The link returns a 404 error.
+That file is no longer in this repository. The link returns a 404 error. Use the October
+2026 update page for new sends.
 
 ## Google Analytics
 
 Each page has the Google Analytics tag `G-L64HE50P6M` in the `<head>` block. The template
-page does not have the tag. Copy this block into each new page:
+page does not have the tag. Copy this block into each new page, directly after `<head>`:
 
 ```html
 <!-- Google tag (gtag.js) -->
@@ -68,5 +92,7 @@ page does not have the tag. Copy this block into each new page:
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 ```
+
+This `<meta http-equiv>` line replaces `<meta charset="UTF-8">`. Do not keep both.
 
 Google keeps this data for 30 days only. Download a report before the data expires.
